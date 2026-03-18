@@ -1,0 +1,6 @@
+Flask
+pymongo
+flask-bcrypt
+flask-login
+flask-wtf
+email-validator

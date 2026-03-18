@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmed - MovieTicketPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .success-container {
+            padding: 2rem 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .success-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .success-animation {
+            margin: 1rem 0;
+        }
+
+        .checkmark-circle {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            font-size: 3rem;
+            color: white;
+            animation: scaleIn 0.5s ease-out;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+                opacity: 0;
+            }
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .success-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 1.5rem 0;
+        }
+
+        .success-message {
+            color: #6b7280;
+            font-size: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .booking-receipt {
+            background: linear-gradient(to bottom, #f8fafc, #f3f4f6);
+            border-radius: 15px;
+            padding: 2rem 1.5rem;
+            margin: 2rem 0;
+            text-align: left;
+            border-left: 4px solid #6366f1;
+        }
+
+        .receipt-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .receipt-title {
+            font-weight: 700;
+            color: #1f2937;
+            font-size: 1.1rem;
+        }
+
+        .receipt-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 0.95rem;
+        }
+
+        .receipt-row:last-child {
+            border-bottom: none;
+        }
+
+        .receipt-label {
+            color: #6b7280;
+            font-weight: 500;
+        }
+
+        .receipt-value {
+            color: #1f2937;
+            font-weight: 600;
+        }
+
+        .receipt-row.total {
+            margin-top: 1rem;
+            padding: 1rem 0;
+            border-top: 2px solid #e5e7eb;
+            font-size: 1.2rem;
+            color: #6366f1;
+            font-weight: 700;
+        }
+
+        .seats-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .seat-badge {
+            background: #dbeafe;
+            color: #6366f1;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .booking-id {
+            background: #fef3c7;
+            color: #92400e;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 1.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        .booking-id-label {
+            display: block;
+            opacity: 0.8;
+            font-size: 0.85rem;
+        }
+
+        .booking-id-value {
+            font-family: 'Courier New', monospace;
+            font-weight: 700;
+            font-size: 1rem;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            flex: 1;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+            color: white;
+            text-decoration: none;
+        }
+
+        .btn-secondary {
+            flex: 1;
+            background: white;
+            color: #6366f1;
+            border: 2px solid #6366f1;
+            padding: 12px;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .btn-secondary:hover {
+            background: #6366f1;
+            color: white;
+            text-decoration: none;
+        }
+
+        .info-box {
+            background: #ecfdf5;
+            border-left: 4px solid #10b981;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            text-align: left;
+        }
+
+        .info-box i {
+            color: #10b981;
+            margin-right: 0.5rem;
+        }
+
+        .info-text {
+            color: #065f46;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-film me-2"></i>MovieTicketPro
+            </a>
+        </div>
+    </nav>
+
+    <div class="container success-container">
+        <div class="success-card">
+            <!-- Success Animation -->
+            <div class="success-animation">
+                <div class="checkmark-circle">
+                    <i class="fas fa-check"></i>
+                </div>
+            </div>
+
+            <!-- Success Message -->
+            <h1 class="success-title">🎉 Booking Confirmed!</h1>
+            <p class="success-message">Your ticket has been successfully booked. Check the details below.</p>
+
+            <!-- Booking Receipt -->
+            <div class="booking-receipt">
+                <div class="receipt-header">
+                    <div class="receipt-title">
+                        <i class="fas fa-ticket-alt me-2"></i>Booking Details
+                    </div>
+                </div>
+
+                <div class="receipt-row">
+                    <span class="receipt-label">Movie:</span>
+                    <span class="receipt-value">{{ booking.get('movie_name', 'N/A') }}</span>
+                </div>
+
+                <div class="receipt-row">
+                    <span class="receipt-label">Show Date:</span>
+                    <span class="receipt-value">Today</span>
+                </div>
+
+                <div class="receipt-row">
+                    <span class="receipt-label">Show Time:</span>
+                    <span class="receipt-value">7:30 PM</span>
+                </div>
+
+                <div class="receipt-row">
+                    <span class="receipt-label">Theater:</span>
+                    <span class="receipt-value">Screen 1</span>
+                </div>
+
+                <div class="receipt-row">
+                    <span class="receipt-label">Number of Seats:</span>
+                    <span class="receipt-value">{{ booking.get('total_seats', 0) }}</span>
+                </div>
+
+                <div class="receipt-row">
+                    <span class="receipt-label">Selected Seats:</span>
+                </div>
+                <div class="seats-list">
+                    {% for seat in booking.get('seats', []) %}
+                        <div class="seat-badge">{{ seat }}</div>
+                    {% endfor %}
+                </div>
+
+                <div class="receipt-row total">
+                    <span>Total Amount:</span>
+                    <span>₹{{ booking.get('total_price', 0) }}</span>
+                </div>
+            </div>
+
+            <!-- Booking ID -->
+            <div class="booking-id">
+                <span class="booking-id-label">Booking Reference ID:</span>
+                <span class="booking-id-value">MTK-{{ booking._id }}</span>
+            </div>
+
+            <!-- Info Box -->
+            <div class="info-box">
+                <i class="fas fa-info-circle"></i>
+                <span class="info-text">Please arrive 15 minutes before the show time. You can download your e-ticket from My Bookings.</span>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="action-buttons">
+                <a href="/mybookings" class="btn-primary">
+                    <i class="fas fa-download"></i>Download Ticket
+                </a>
+            </div>
+
+            <div class="action-buttons" style="margin-top: 1rem;">
+                <a href="/movies" class="btn-secondary">
+                    <i class="fas fa-arrow-left"></i>Back to Movies
+                </a>
+                <a href="/dashboard" class="btn-secondary">
+                    <i class="fas fa-home"></i>Go to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

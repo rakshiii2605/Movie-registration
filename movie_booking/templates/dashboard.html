@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - MovieTicketPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #6366f1;
+            --secondary-color: #8b5cf6;
+            --success-color: #10b981;
+            --warning-color: #f59e0b;
+            --danger-color: #ef4444;
+            --dark-color: #1f2937;
+            --light-color: #f8fafc;
+            --border-color: #e5e7eb;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .dashboard-container {
+            padding: 2rem 0;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stats-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .status-badge {
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .status-confirmed {
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.1);
+            color: var(--danger-color);
+        }
+
+        .quick-actions {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .action-btn {
+            border-radius: 12px;
+            padding: 1rem 1.5rem;
+            font-weight: 500;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+            margin: 0.5rem;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .recent-bookings h4 {
+            color: var(--dark-color);
+            margin-bottom: 1.5rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: #6b7280;
+        }
+
+        .empty-state i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container">
+            <a class="navbar-brand fw-bold text-primary" href="/">
+                <i class="fas fa-film me-2"></i>MovieTicketPro
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/movies">
+                            <i class="fas fa-film me-1"></i>Movies
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mybookings">
+                            <i class="fas fa-ticket-alt me-1"></i>My Bookings
+                        </a>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-user-circle me-1"></i>{{ session.get('user_name', 'User') }}
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="/mybookings">
+                                <i class="fas fa-ticket-alt me-2"></i>My Bookings
+                            </a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="/logout">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container dashboard-container">
+        <!-- Welcome Section -->
+        <div class="welcome-card">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">
+                        Welcome back, {{ session.get('user_name', 'User') }}! 🎬
+                    </h1>
+                    <p class="lead mb-0">
+                        Ready for your next movie adventure? Browse our latest releases and book your seats now.
+                    </p>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="fas fa-cinema fa-5x opacity-75"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <h3 class="mb-4">
+                <i class="fas fa-bolt text-warning me-2"></i>Quick Actions
+            </h3>
+            <div class="row">
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <a href="/movies" class="action-btn btn btn-primary w-100">
+                        <i class="fas fa-film me-2"></i>Browse Movies
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <a href="/mybookings" class="action-btn btn btn-success w-100">
+                        <i class="fas fa-ticket-alt me-2"></i>My Bookings
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <a href="#recent" class="action-btn btn btn-info w-100">
+                        <i class="fas fa-history me-2"></i>Recent Activity
+                    </a>
+                </div>
+                <div class="col-md-3 col-sm-6 mb-3">
+                    <a href="/logout" class="action-btn btn btn-danger w-100">
+                        <i class="fas fa-sign-out-alt me-2"></i>Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Statistics Cards -->
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-icon bg-primary text-white">
+                        <i class="fas fa-ticket-alt"></i>
+                    </div>
+                    <h4 class="fw-bold">{{ user_bookings|length }}</h4>
+                    <p class="text-muted mb-0">Total Bookings</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-icon bg-success text-white">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h4 class="fw-bold">{{ user_bookings|selectattr('status', 'equalto', 'confirmed')|list|length }}</h4>
+                    <p class="text-muted mb-0">Active Bookings</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="stats-card">
+                    <div class="stats-icon bg-warning text-white">
+                        <i class="fas fa-rupee-sign"></i>
+                    </div>
+                    <h4 class="fw-bold">₹{{ (user_bookings|selectattr('status', 'equalto', 'confirmed')|list|sum(attribute='total_price'))|default(0) }}</h4>
+                    <p class="text-muted mb-0">Total Spent</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Bookings -->
+        <div id="recent" class="recent-bookings">
+            <h4>
+                <i class="fas fa-clock me-2"></i>Recent Bookings
+            </h4>
+
+            {% if user_bookings %}
+                {% for booking in user_bookings[:5] %}
+                <div class="booking-card">
+                    <div class="row align-items-center">
+                        <div class="col-md-2">
+                            <i class="fas fa-film fa-2x text-primary"></i>
+                        </div>
+                        <div class="col-md-6">
+                            <h5 class="mb-1">{{ booking.movie_name }}</h5>
+                            <p class="text-muted mb-1">
+                                <i class="fas fa-calendar me-1"></i>{{ booking.get('created_at', 'N/A') | format_datetime }}
+                            </p>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-chair me-1"></i>Seats: {{ booking.get('seats', []) | join(', ') }}
+                            </p>
+                        </div>
+                        <div class="col-md-2">
+                            <span class="status-badge status-{{ booking.status }}">
+                                {{ booking.status | title }}
+                            </span>
+                        </div>
+                        <div class="col-md-2 text-end">
+                            <div class="fw-bold text-primary">₹{{ booking.total_price }}</div>
+                            <small class="text-muted">{{ booking.total_seats }} tickets</small>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+                {% if user_bookings|length > 5 %}
+                <div class="text-center mt-3">
+                    <a href="/mybookings" class="btn btn-outline-primary">
+                        <i class="fas fa-eye me-2"></i>View All Bookings
+                    </a>
+                </div>
+                {% endif %}
+            {% else %}
+                <div class="empty-state">
+                    <i class="fas fa-ticket-alt"></i>
+                    <h5>No bookings yet</h5>
+                    <p>Start your movie journey by booking your first tickets!</p>
+                    <a href="/movies" class="btn btn-primary">
+                        <i class="fas fa-film me-2"></i>Browse Movies
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h5>MovieTicketPro</h5>
+                    <p>Your ultimate destination for movie ticket booking.</p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="mb-0">© 2024 MovieTicketPro. All rights reserved.</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

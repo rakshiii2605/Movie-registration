@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ movie.get('name', 'Movie Details') }} - MovieTicketPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #6366f1 !important;
+        }
+
+        .movie-details-container {
+            padding: 2rem 0;
+        }
+
+        .movie-backdrop {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            height: 300px;
+            border-radius: 20px;
+            margin-bottom: 2rem;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .movie-backdrop img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .movie-content-card {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .movie-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+        }
+
+        .movie-rating {
+            color: #f59e0b;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .movie-meta {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+            padding: 2rem 0;
+            border-top: 2px solid #e5e7eb;
+            border-bottom: 2px solid #e5e7eb;
+        }
+
+        .meta-item {
+            text-align: center;
+        }
+
+        .meta-value {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #6366f1;
+        }
+
+        .meta-label {
+            color: #6b7280;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .description-section {
+            margin: 2rem 0;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #6366f1;
+            display: inline-block;
+        }
+
+        .description-text {
+            color: #4b5563;
+            line-height: 1.8;
+            font-size: 1rem;
+        }
+
+        .cast-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .cast-member {
+            text-align: center;
+        }
+
+        .cast-avatar {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 50%;
+            margin: 0 auto 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+        }
+
+        .cast-name {
+            font-weight: 600;
+            color: #1f2937;
+        }
+
+        .cast-role {
+            color: #6b7280;
+            font-size: 0.85rem;
+        }
+
+        .btn-book-now {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-block;
+            text-decoration: none;
+            margin-top: 2rem;
+        }
+
+        .btn-book-now:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.3);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-film me-2"></i>MovieTicketPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/movies">
+                            <i class="fas fa-arrow-left me-1"></i>Back to Movies
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container movie-details-container">
+        <!-- Movie Backdrop -->
+        <div class="movie-backdrop">
+            <img src="{{ movie.get('image', '') }}" alt="{{ movie.get('name', 'Movie') }}" onerror="this.style.display='none'">
+        </div>
+
+        <!-- Movie Content -->
+        <div class="movie-content-card">
+            <h1 class="movie-title">{{ movie.get('name', 'Unknown Movie') }}</h1>
+            <div class="movie-rating">
+                <i class="fas fa-star"></i> 4.5/5 - Blockbuster
+            </div>
+
+            <!-- Movie Meta Information -->
+            <div class="movie-meta">
+                <div class="meta-item">
+                    <div class="meta-value">2h 30m</div>
+                    <div class="meta-label">Duration</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-value">Action</div>
+                    <div class="meta-label">Genre</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-value">2024</div>
+                    <div class="meta-label">Release Year</div>
+                </div>
+                <div class="meta-item">
+                    <div class="meta-value">Hindi</div>
+                    <div class="meta-label">Language</div>
+                </div>
+            </div>
+
+            <!-- Description Section -->
+            <div class="description-section">
+                <h3 class="section-title">Synopsis</h3>
+                <p class="description-text">
+                    Experience an electrifying cinematic journey with this blockbuster film. 
+                    Featuring stunning cinematography, gripping storyline, and world-class performances. 
+                    A must-watch for movie enthusiasts across all age groups.
+                </p>
+            </div>
+
+            <!-- Cast Section -->
+            <div class="description-section">
+                <h3 class="section-title">Cast & Crew</h3>
+                <div class="cast-grid">
+                    <div class="cast-member">
+                        <div class="cast-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="cast-name">Lead Actor</div>
+                        <div class="cast-role">Main Role</div>
+                    </div>
+                    <div class="cast-member">
+                        <div class="cast-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="cast-name">Supporting Actor</div>
+                        <div class="cast-role">Supporting Role</div>
+                    </div>
+                    <div class="cast-member">
+                        <div class="cast-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="cast-name">Director</div>
+                        <div class="cast-role">Director</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Book Now Button -->
+            <a href="/seats/{{ movie.get('_id', '') }}" class="btn-book-now">
+                <i class="fas fa-ticket-alt me-2"></i>Book Now
+            </a>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Bookings - MovieTicketPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #6366f1 !important;
+        }
+
+        .bookings-container {
+            padding: 2rem 0;
+        }
+
+        .page-header {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-subtitle {
+            color: #6b7280;
+            font-size: 1rem;
+        }
+
+        .booking-card {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+            border-left: 5px solid #10b981;
+            transition: all 0.3s ease;
+        }
+
+        .booking-card.cancelled {
+            border-left-color: #ef4444;
+            opacity: 0.9;
+        }
+
+        .booking-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .booking-movie {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .booking-movie-icon {
+            width: 60px;
+            height: 60px;
+            background: #f0f9ff;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #6366f1;
+            font-size: 1.5rem;
+        }
+
+        .booking-movie-info h5 {
+            margin: 0 0 0.5rem;
+            color: #1f2937;
+            font-weight: 700;
+        }
+
+        .booking-movie-info p {
+            margin: 0;
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .status-booked {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-confirmed {
+            background: rgba(16, 185, 129, 0.15);
+            color: #10b981;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .status-cancelled {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+        }
+
+        .booking-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+            padding: 1.5rem 0;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .detail-label {
+            color: #6b7280;
+            font-size: 0.85rem;
+            font-weight: 500;
+            margin-bottom: 0.3rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .detail-value {
+            color: #1f2937;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .detail-icon {
+            color: #6366f1;
+            margin-right: 0.5rem;
+        }
+
+        .seats-list {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 1rem;
+            margin: 1rem 0;
+        }
+
+        .seat-badge {
+            display: inline-block;
+            background: #dbeafe;
+            color: #6366f1;
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            margin: 0.3rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .booking-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-download {
+            background: #6366f1;
+            color: white;
+        }
+
+        .btn-download:hover {
+            background: #8b5cf6;
+        }
+
+        .btn-cancel {
+            background: #fee2e2;
+            color: #dc2626;
+        }
+
+        .btn-cancel:hover {
+            background: #fecaca;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            color: #d1d5db;
+            margin-bottom: 1rem;
+        }
+
+        .empty-title {
+            color: #1f2937;
+            font-weight: 700;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-text {
+            color: #6b7280;
+            margin-bottom: 1.5rem;
+        }
+
+        .btn-back-movies {
+            background: #6366f1;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn-back-movies:hover {
+            background: #8b5cf6;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-film me-2"></i>MovieTicketPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/movies">
+                            <i class="fas fa-film me-1"></i>Movies
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container bookings-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-ticket-alt me-2"></i>My Bookings
+            </h1>
+            <p class="page-subtitle">View and manage your movie ticket bookings</p>
+        </div>
+
+        <!-- Bookings List -->
+        {% if bookings %}
+            {% for booking in bookings %}
+                <div class="booking-card {% if booking.status == 'cancelled' %}cancelled{% endif %}">
+                    <!-- Booking Header -->
+                    <div class="booking-header">
+                        <div class="booking-movie">
+                            <div class="booking-movie-icon">
+                                <i class="fas fa-film"></i>
+                            </div>
+                            <div class="booking-movie-info">
+                                <h5>{{ booking.movie_name }}</h5>
+                                <p>
+                                    <i class="fas fa-calendar-alt me-1"></i>
+                                    {{ booking.created_at | format_datetime }}
+                                </p>
+                            </div>
+                        </div>
+                        <span class="status-badge status-{{ booking.status }}">
+                            {% if booking.status == 'booked' %}
+                                <i class="fas fa-check-circle me-1"></i>✓ BOOKED
+                            {% elif booking.status == 'confirmed' %}
+                                <i class="fas fa-check-circle me-1"></i>✓ BOOKED
+                            {% elif booking.status == 'cancelled' %}
+                                <i class="fas fa-times-circle me-1"></i>CANCELLED
+                            {% else %}
+                                {{ booking.status | title }}
+                            {% endif %}
+                        </span>
+                    </div>
+
+                    <!-- Booking Details -->
+                    <div class="booking-details">
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <i class="fas fa-chair detail-icon"></i>Selected Seats
+                            </span>
+                            <span class="detail-value">{{ booking.total_seats }} Seats</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <i class="fas fa-rupee-sign detail-icon"></i>Total Price
+                            </span>
+                            <span class="detail-value">₹{{ booking.total_price }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-label">
+                                <i class="fas fa-info-circle detail-icon"></i>Booking ID
+                            </span>
+                            <span class="detail-value" style="font-size: 0.9rem;">{{ booking._id }}</span>
+                        </div>
+                    </div>
+
+                    <!-- Seats List -->
+                    <div class="seats-list">
+                        <p style="margin: 0 0 0.5rem; color: #6b7280; font-weight: 600;">
+                            <i class="fas fa-tag me-1"></i>Your Seats:
+                        </p>
+                        {% for seat in booking.seats %}
+                            <span class="seat-badge">{{ seat }}</span>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Booking Actions -->
+                    <div class="booking-actions">
+                        <button class="btn-action btn-download" onclick="downloadTicket('{{ booking._id }}')">
+                            <i class="fas fa-download me-1"></i>Download Ticket
+                        </button>
+                        {% if booking.status == 'booked' or booking.status == 'confirmed' %}
+                            <form method="POST" action="/cancel-booking/{{ booking._id }}" style="flex: 1;" onsubmit="return confirm('Are you sure you want to cancel this booking?');">
+                                <button type="submit" class="btn-action btn-cancel w-100">
+                                    <i class="fas fa-times me-1"></i>Cancel Booking
+                                </button>
+                            </form>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-inbox"></i>
+                </div>
+                <div class="empty-title">No Bookings Yet</div>
+                <p class="empty-text">You haven't booked any movie tickets yet. Start your movie journey now!</p>
+                <a href="/movies" class="btn-back-movies">
+                    <i class="fas fa-film me-1"></i>Browse Movies
+                </a>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function downloadTicket(bookingId) {
+            alert('Ticket download feature coming soon! Booking ID: ' + bookingId);
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movies - MovieTicketPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            color: #6366f1 !important;
+        }
+
+        .movies-container {
+            padding: 2rem 0;
+        }
+
+        .page-header {
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.9), rgba(139, 92, 246, 0.9));
+            color: white;
+            padding: 2rem 0 1rem;
+            margin-bottom: 2rem;
+            border-radius: 20px;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .search-bar {
+            background: white;
+            border-radius: 15px;
+            padding: 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .search-input {
+            border: 2px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 12px;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+            outline: none;
+        }
+
+        .movie-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .movie-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+        }
+
+        .movie-poster {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            background: #333;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .movie-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .movie-card:hover .movie-overlay {
+            opacity: 1;
+        }
+
+        .play-button {
+            width: 60px;
+            height: 60px;
+            background: #6366f1;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .play-button:hover {
+            background: #8b5cf6;
+            transform: scale(1.1);
+        }
+
+        .movie-info {
+            padding: 1.5rem;
+        }
+
+        .movie-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin-bottom: 0.5rem;
+        }
+
+        .movie-rating {
+            color: #f59e0b;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .movie-genre {
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+
+        .movie-actions {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .btn-book {
+            flex: 1;
+            background: #6366f1;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .btn-book:hover {
+            background: #8b5cf6;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            margin-bottom: 1rem;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <i class="fas fa-film me-2"></i>MovieTicketPro
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/dashboard">
+                            <i class="fas fa-tachometer-alt me-1"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/movies">
+                            <i class="fas fa-film me-1"></i>Movies
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/mybookings">
+                            <i class="fas fa-ticket-alt me-1"></i>My Bookings
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">
+                            <i class="fas fa-sign-out-alt me-1"></i>Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container movies-container">
+        <!-- Page Header -->
+        <div class="page-header">
+            <h1 class="page-title">
+                <i class="fas fa-popcorn me-2"></i>Browse Movies
+            </h1>
+            <p style="opacity: 0.9; margin: 0;">Book your favorite movies and enjoy the entertainment</p>
+        </div>
+
+        <!-- Search Bar -->
+        <div class="search-bar">
+            <div class="row align-items-center">
+                <div class="col-md-6">
+                    <input type="text" class="search-input w-100" id="searchInput" placeholder="Search movies..." onkeyup="filterMovies()">
+                </div>
+                <div class="col-md-6">
+                    <div>
+                        <small class="text-muted">
+                            <i class="fas fa-info-circle me-1"></i>
+                            Found <span id="movieCount">{{ movies|length }}</span> movies
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Movies Grid -->
+        {% if movies %}
+            <div class="row g-4" id="moviesGrid">
+                {% for movie in movies %}
+                    <div class="col-md-4 col-lg-3 movie-item">
+                        <div class="movie-card">
+                            <div class="movie-poster" style="background: linear-gradient(135deg, #667eea, #764ba2); position: relative;">
+                                <img src="{{ movie.get('image', '') }}" alt="{{ movie.get('name', 'Movie') }}" style="width: 100%; height: 100%; object-fit: cover;"/>
+                                <div class="movie-overlay">
+                                    <div class="play-button">
+                                        <i class="fas fa-play"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="movie-info">
+                                <h5 class="movie-title">{{ movie.get('name', 'Unknown') }}</h5>
+                                <div class="movie-rating">
+                                    <i class="fas fa-star"></i> 4.5/5 - Blockbuster
+                                </div>
+                                <div class="movie-genre">
+                                    <i class="fas fa-tag me-1"></i>Action | Drama
+                                </div>
+                                <div class="movie-actions">
+                                    <a href="/seats/{{ movie.get('_id', movie.get('name', '')) }}" class="btn-book">
+                                        <i class="fas fa-ticket-alt me-1"></i>Book Now
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="empty-state">
+                <div class="empty-icon">
+                    <i class="fas fa-film"></i>
+                </div>
+                <h3>No Movies Available</h3>
+                <p>Sorry, there are no movies available at the moment. Please check back later!</p>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        function filterMovies() {
+            const input = document.getElementById('searchInput').value.toLowerCase();
+            const movies = document.querySelectorAll('.movie-item');
+            let count = 0;
+
+            movies.forEach(movie => {
+                const title = movie.querySelector('.movie-title').textContent.toLowerCase();
+                if (title.includes(input)) {
+                    movie.style.display = 'block';
+                    count++;
+                } else {
+                    movie.style.display = 'none';
+                }
+            });
+
+            document.getElementById('movieCount').textContent = count;
+        }
+    </script>
+</body>
+</html>
