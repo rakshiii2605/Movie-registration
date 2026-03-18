@@ -1,3 +1,5 @@
+![Movie Booking Banner]([https://your-image-link.jpg](https://www.techuz.com/blog/wp-content/uploads/2019/08/Online-Movie-Ticket-Booking-Banner-1-1280x720.jpg))
+
 # Movie-registration
 A Flask-based Movie Ticket Booking System with MongoDB integration, allowing users to register, browse movies with posters, select seats, and book tickets online.
 
